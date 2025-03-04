@@ -104,6 +104,11 @@ void BitcoinExchange::startConversion(std::string input_file)
             std::cerr << "Error: Not a positive number." << std::endl;
             continue;
         }
+        if (amount > 1000)
+        {
+            std::cerr << "Error: Too big of a number." << std::endl;
+            continue;
+        }
         if (!isDateCorrect(date))
         {
             std::cerr << "Date is wrong." << std::endl;
@@ -113,7 +118,7 @@ void BitcoinExchange::startConversion(std::string input_file)
         if (valueByDate < 0)
             std::cerr << "Date cannot be older than the oldest date on the data sheet." << std::endl;
         else
-            std::cout << date << " => " << amount_str << " = " << valueByDate * amount << std::endl;
+            std::cout << date << " => " << amount_str << " = " << std::fixed << std::setprecision(2) << valueByDate * amount << std::endl;
     }
 }
 
@@ -132,7 +137,8 @@ float searchClosestDate(std::map<std::string, float>& dataMap, std::string date)
             return it->second;
         }
     }
-    return -1;
+    it--;
+    return it->second;
 }
 
 float BitcoinExchange::getValueByDate(std::string date)
