@@ -1,5 +1,5 @@
-NAME = RPN
-SRCS = ./src/main.cpp ./src/RPN.cpp ./src/utils.cpp
+NAME = PMergeMe
+SRCS = ./src/main.cpp
 OBJDIR = ./objs
 OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
 DEPS = $(OBJS:.o=.d)
