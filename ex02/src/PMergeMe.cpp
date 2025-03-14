@@ -6,7 +6,7 @@
 /*   By: bince <bince@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 15:53:46 by bince             #+#    #+#             */
-/*   Updated: 2025/03/14 15:53:47 by bince            ###   ########.fr       */
+/*   Updated: 2025/03/14 19:47:28 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,78 +32,93 @@ PMergeMe &PMergeMe::operator=(PMergeMe const &rhs)
     return *this;
 }
 
-void PMergeMe::merge_sort(std::vector<int>& arr,int left, int right)
+void PMergeMe::sort(std::vector<int>& arr) 
 {
-    if (left < right) {
-        int mid = left + (right - left) / 2;
-        merge_sort(arr, left, mid);
-        merge_sort(arr, mid + 1, right);
-        merge(arr, left, mid, right);
-    }
+    if (arr.size() <= 1) 
+        return;
+    fj_sort(arr, 0, arr.size() - 1);
 }
 
-void PMergeMe::merge_sort(std::deque<int>& arr,int left, int right)
+void PMergeMe::sort(std::deque<int>& arr) 
 {
-    if (left < right) {
-        int mid = left + (right - left) / 2;
-        merge_sort(arr, left, mid);
-        merge_sort(arr, mid + 1, right);
-        merge(arr, left, mid, right);
-    }
+    if (arr.size() <= 1) 
+        return;
+    fj_sort(arr, 0, arr.size() - 1);
 }
 
-void PMergeMe::merge(std::vector<int>&arr, int left, int mid, int right)
+void PMergeMe::fj_sort(std::vector<int>& arr, int left, int right)
 {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
+    if (right - left <= 0) 
+        return;
 
-    std::vector<int> leftArr(n1), rightArr(n2);
+    std::vector<std::pair<int, int> > pairs;
+    std::vector<int> large, small;
 
-    for (int i = 0; i < n1; i++) 
-        leftArr[i] = arr[left + i];
-    for (int j = 0; j < n2; j++) 
-        rightArr[j] = arr[mid + 1 + j];
-
-    int i = 0; 
-    int j = 0; 
-    int k = left;
-
-    while (i < n1 && j < n2) 
+    for (int i = left; i + 1 <= right; i += 2) 
     {
-        if (leftArr[i] <= rightArr[j]) arr[k++] = leftArr[i++];
-        else arr[k++] = rightArr[j++];
+        if (arr[i] > arr[i + 1])
+            pairs.push_back(std::make_pair(arr[i], arr[i + 1]));
+        else
+            pairs.push_back(std::make_pair(arr[i + 1], arr[i]));
     }
 
-    while (i < n1) 
-        arr[k++] = leftArr[i++];
-    while (j < n2) 
-        arr[k++] = rightArr[j++];
-}
-
-void PMergeMe::merge(std::deque<int>&arr, int left, int mid, int right)
-{
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
-
-    std::deque<int> leftArr(n1), rightArr(n2);
-
-    for (int i = 0; i < n1; i++) 
-        leftArr[i] = arr[left + i];
-    for (int j = 0; j < n2; j++) 
-        rightArr[j] = arr[mid + 1 + j];
-
-    int i = 0; 
-    int j = 0; 
-    int k = left;
-
-    while (i < n1 && j < n2) 
+    for (size_t i = 0; i < pairs.size(); i++) 
     {
-        if (leftArr[i] <= rightArr[j]) arr[k++] = leftArr[i++];
-        else arr[k++] = rightArr[j++];
+        large.push_back(pairs[i].first);
+        small.push_back(pairs[i].second);
     }
 
-    while (i < n1) 
-        arr[k++] = leftArr[i++];
-    while (j < n2) 
-        arr[k++] = rightArr[j++];
+    if ((right - left + 1) % 2 != 0)
+        large.push_back(arr[right]);
+
+    fj_sort(large, 0, large.size() - 1);
+
+    std::vector<int> sortedArr = large;
+    for (size_t i = 0; i < small.size(); i++) 
+    {
+        int x = small[i];
+        std::vector<int>::iterator pos = std::lower_bound(sortedArr.begin(), sortedArr.end(), x);
+        sortedArr.insert(pos, x);
+    }
+    for (size_t i = 0; i < sortedArr.size(); i++)
+        arr[left + i] = sortedArr[i];
 }
+
+void PMergeMe::fj_sort(std::deque<int>& arr, int left, int right)
+{
+    if (right - left <= 0) 
+        return;
+
+    std::vector<std::pair<int, int> > pairs;
+    std::deque<int> large, small;
+
+    for (int i = left; i + 1 <= right; i += 2) 
+    {
+        if (arr[i] > arr[i + 1])
+            pairs.push_back(std::make_pair(arr[i], arr[i + 1]));
+        else
+            pairs.push_back(std::make_pair(arr[i + 1], arr[i]));
+    }
+
+    for (size_t i = 0; i < pairs.size(); i++) 
+    {
+        large.push_back(pairs[i].first);
+        small.push_back(pairs[i].second);
+    }
+
+    if ((right - left + 1) % 2 != 0)
+        large.push_back(arr[right]);
+
+    fj_sort(large, 0, large.size() - 1);
+
+    std::deque<int> sortedArr = large;
+    for (size_t i = 0; i < small.size(); i++) 
+    {
+        int x = small[i];
+        std::deque<int>::iterator pos = std::lower_bound(sortedArr.begin(), sortedArr.end(), x);
+        sortedArr.insert(pos, x);
+    }
+    for (size_t i = 0; i < sortedArr.size(); i++)
+        arr[left + i] = sortedArr[i];
+}
+

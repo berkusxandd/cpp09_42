@@ -6,7 +6,7 @@
 /*   By: bince <bince@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 15:53:49 by bince             #+#    #+#             */
-/*   Updated: 2025/03/14 15:53:50 by bince            ###   ########.fr       */
+/*   Updated: 2025/03/14 19:36:58 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <deque>
 #include <cstdlib>
 #include <stdexcept>
+#include <iostream>
 bool isStrNumber(char *str)
 {
     int i = 0;
@@ -57,4 +58,14 @@ std::deque<int> create_d(char **av)
         d_num.push_back(num);
     }
     return d_num;
+}
+
+void print_vector(std::vector<int>& v)
+{
+    std::vector<int>::iterator it = v.begin();
+    for(; it!=v.end();it++)
+    {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
 }
