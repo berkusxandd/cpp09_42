@@ -1,5 +1,5 @@
 NAME = PMergeMe
-SRCS = ./src/main.cpp
+SRCS = ./src/main.cpp ./src/PMergeMe.cpp ./src/utils.cpp
 OBJDIR = ./objs
 OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
 DEPS = $(OBJS:.o=.d)
