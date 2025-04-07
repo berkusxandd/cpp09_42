@@ -6,3 +6,6 @@ The program will take as input a second database, storing the different prices/d
 
 # Ex01: Reverse Polish Notation
 Your program must take an inverted Polish mathematical expression as an argument. It must be able to handle operations with these tokens: "+ - / *".
+
+# Ex02: PMergeMe
+Sorting arrays with merge-sort and Ford-Johnson algorithm.
